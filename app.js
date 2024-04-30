@@ -11,7 +11,9 @@ const subtractBeatsButton = document.querySelector(".subtract-beats");
 const addBeatsButton = document.querySelector(".add-beats");
 const measureCount = document.querySelector(".measure-count");
 
-const clickLower = new Audio("click_lower.mp3");
+const clickLower = new Audio(
+  "https://github.com/thareeqroshan/JSMetronome/raw/main/click_lower.mp3"
+);
 const clickUpper = new Audio("click_upper.mp3");
 clickLower.preload = "auto";
 
