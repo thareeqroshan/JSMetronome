@@ -14,12 +14,17 @@ const measureCount = document.querySelector(".measure-count");
 const clickLower = new Audio(
   "https://github.com/thareeqroshan/JSMetronome/raw/main/click_lower.mp3"
 );
-const clickUpper = new Audio("click_upper.mp3");
+const clickUpper = new Audio(
+  "https://github.com/thareeqroshan/JSMetronome/raw/main/click_upper.mp3"
+);
 clickLower.preload = "auto";
 
 let bpm = 140;
 let beatsPerMeasure = 4;
 let tempoTextString = "Medium";
+let isRunning = false;
+let count = 0;
+const metronome = new Timer(playClick, 60000 / bpm, { immediate: true });
 updateMetronome();
 
 decreaseTempoButton.addEventListener("click", () => {
@@ -52,7 +57,16 @@ addBeatsButton.addEventListener("click", () => {
 });
 
 startStopButton.addEventListener("click", () => {
-  metronome.start();
+  count = 0;
+  if (!isRunning) {
+    metronome.start();
+    isRunning = true;
+    startStopButton.textContent = "STOP";
+  } else {
+    metronome.stop();
+    isRunning = false;
+    startStopButton.textContent = "START";
+  }
 });
 
 function updateMetronome() {
@@ -69,6 +83,7 @@ function updateMetronome() {
   if (bpm > 260 && bpm <= 280) tempoTextString = "Eddie Van Halen";
 
   tempoText.textContent = tempoTextString;
+  metronome.timeInterval = 60000 / bpm;
 }
 
 function validateTempo() {
@@ -81,8 +96,16 @@ function validateTempo() {
 }
 
 function playClick() {
-  clickLower.play();
-  console.log("test");
+  console.log(count);
+  if (count === beatsPerMeasure) {
+    count = 0;
+  }
+  if (count === 0) {
+    clickLower.play();
+    clickLower.currentTime = 0;
+  } else {
+    clickUpper.play();
+    clickUpper.currentTime = 0;
+  }
+  count++;
 }
-console.log("hello");
-const metronome = new Timer(playClick, 60000 / bpm, { immediate: true });
